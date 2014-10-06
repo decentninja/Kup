@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+
+import re
+import sys
+import subprocess
+import webbrowser
+
+
+def kattisupload(id, files, options):
+	command = "kattis_submit.py -f {} -p {} {}".format(options or "", id, files)
+	output = subprocess.check_output(command, shell=True)
+	link = "https://kth.kattis.com/submissions/"
+	link += re.search('Submission ID: (\d+)\.', output).group(1)
+	webbrowser.open(link)
+
+
+if __name__ == '__main__':
+	definitions = open("problem.kup", "r").read()
+	target = " ".join(sys.argv[1:])
+	problems = re.finditer('\n*([^:\n]+):\n[\t ]+(.+)\n[\t ]+(.+)(?:\n[\t ]+(.+))?', definitions)
+	for problem in problems:
+		if target != "" and problem.group(1) != target:
+			continue
+
+		kattisupload(problem.group(2), problem.group(3), problem.group(4))
+		sys.exit()
+
+	print("No matching problem in problem.kup, check your spelling!")

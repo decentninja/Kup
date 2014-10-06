@@ -1,0 +1,8 @@
+hmm1:
+	kth:ai:hmm1
+	src/HiddenMarkovModel.{hpp,cpp} src/Matrix.hpp
+
+hmm4:
+	kth:ai:hmm4
+	Markov4.java kattio.java
+	--mainclass=Main --debug
